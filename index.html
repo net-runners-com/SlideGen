@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SlideGen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@200..900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@100..900&family=Zen+Old+Mincho:wght@400;500;600;700;900&family=Roboto+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* 元スライドの字形をトレースして作った書体。収録外の字は
+         ブラウザが 1 字ずつ後続のフォントへ落としてくれる。 */
+      /* ゴシックは元スライドでも太さが 2 系統あるので、別ファイルに分けて
+         font-weight でブラウザに選ばせる。1 本に混ぜると一行の中で太さがばらつく。 */
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
