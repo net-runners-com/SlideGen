@@ -1,4 +1,7 @@
-/** 出力する案件を選ぶ。新しい案件はここを差し替える。 */
-import { officeNabe } from './office-nabe'
+/** 出力する案件を選ぶ。新しい案件はここを差し替える。
+ *
+ *  実在の顧客データを入れたファイルは、公開リポジトリに含めないこと。
+ *  診断結果はその会社の弱点そのものなので、公開すると当人の不利益になる。 */
+import { sample } from './sample'
 
-export const R = officeNabe
+export const R = sample

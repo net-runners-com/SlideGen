@@ -1,7 +1,7 @@
-import { scoreNow, scoreWorst } from '../report'
-import { R } from '../reports'
-import { C, F } from '../theme'
-import type { Slide } from '../types'
+import { scoreNow, scoreWorst } from '../../report'
+import { R } from '../../reports'
+import { C, F } from '../../theme'
+import type { Slide } from '../../types'
 
 /** グラフの見本。数値は report.ts から引くので、案件を替えれば図も変わる。
  *  画像生成に描かせると比率が合わないので、図形として描く。 */

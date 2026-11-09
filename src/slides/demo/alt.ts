@@ -1,7 +1,7 @@
-import { headline, lead, scoreNow, scoreWorst } from '../report'
-import { R } from '../reports'
-import { C, F } from '../theme'
-import type { Node, Slide } from '../types'
+import { headline, lead, scoreNow, scoreWorst } from '../../report'
+import { R } from '../../reports'
+import { C, F } from '../../theme'
+import type { Node, Slide } from '../../types'
 
 /** 別案の表紙：紋章・飾り罫をやめ、面と級差だけで組む。
  *

@@ -1,6 +1,6 @@
-import { bullets, cards, diagram, statement } from '../layout'
-import { R } from '../reports'
-import type { Slide } from '../types'
+import { bullets, cards, diagram, statement } from '../../layout'
+import { R } from '../../reports'
+import type { Slide } from '../../types'
 
 /** レイアウトテンプレートの見本。
  *  座標を書かずに、型とデータだけでページを組めることを示す。 */

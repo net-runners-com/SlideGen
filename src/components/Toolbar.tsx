@@ -10,7 +10,7 @@ const ROLE_LABEL: Record<keyof FontRoles, string> = {
 }
 
 export function Toolbar({
-  roles, onRoles, picks, onPicks, choices, onExportPNG, onExportSVG, onExportAll, busy,
+  roles, onRoles, picks, onPicks, choices, onExportPNG, onExportAll, busy,
 }: {
   roles: FontRoles
   onRoles: (r: FontRoles) => void
@@ -18,7 +18,6 @@ export function Toolbar({
   onPicks: (p: Picks) => void
   choices: readonly string[]
   onExportPNG: () => void
-  onExportSVG: () => void
   onExportAll: () => void
   busy: string | null
 }) {
@@ -58,9 +57,6 @@ export function Toolbar({
       <div className="actions">
         {busy && <span className="busy">{busy}</span>}
         <button onClick={onExportPNG} disabled={!!busy}>このページを PNG</button>
-        <button onClick={onExportSVG} disabled={!!busy} title="文字は text 要素のまま。自家製フォントは中に埋め込む">
-          このページを SVG
-        </button>
         <button onClick={onExportAll} disabled={!!busy}>全8ページを PDF</button>
       </div>
     </div>

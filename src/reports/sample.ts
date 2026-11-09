@@ -1,19 +1,19 @@
 import type { Report } from '../report'
 
-/** 社会保険労務士法人オフィスなべ様（2026年10月）
+/** 公開用のサンプル案件。実在しない会社の、作り話の数値。
  *
- *  件数はここで1度だけ決めて、本文へは差し込む。
- *  表紙・構成図・表の3か所に同じ数字が出るので、直書きすると必ず食い違う。 */
+ *  実案件は reports/ に別ファイルを置き、reports/index.ts の import を
+ *  差し替える（そのファイルは公開リポジトリに入れないこと）。 */
 const CRITICAL = 7
 const HIGH = 41
 const TOTAL = 48
 const PLATFORM = 'WordPress'
 
-export const officeNabe: Report = {
+export const sample: Report = {
   client: {
-    name: '社会保険労務士法人オフィスなべ様',
-    domain: 'www.office-nabe.com',
-    date: '2026年10月24日',
+    name: '株式会社サンプル商事様',
+    domain: 'example.co.jp',
+    date: '2026年1月15日',
   },
   platform: PLATFORM,
   candidates: { total: TOTAL, critical: CRITICAL, high: HIGH },
@@ -22,36 +22,16 @@ export const officeNabe: Report = {
   confirmed: '通常の閲覧には不要な古い連携用入口と、御社名を使う偽メールを止めにくい状態を',
 
   findings: [
-    {
-      state: '古い連携用入口の公開',
-      status: '確認済み',
-      now: 20, worst: 20,
-      why: '不正利用を試される対象になる',
-    },
-    {
-      state: '偽メール対策の不足',
-      status: '確認済み',
-      now: 15, worst: 15,
-      why: '取引先を狙う偽装に使われ得る',
-    },
-    {
-      state: `重大候補${TOTAL}件`,
-      status: '要確認',
-      now: 0, worst: 50,
-      why: `CRITICAL ${CRITICAL}件、HIGH ${HIGH}件。\n確認されれば最優先Aへ上がる`,
-    },
+    { state: '古い連携用入口の公開', status: '確認済み', now: 20, worst: 20,
+      why: '不正利用を試される対象になる' },
+    { state: '偽メール対策の不足', status: '確認済み', now: 15, worst: 15,
+      why: '取引先を狙う偽装に使われ得る' },
+    { state: `重大候補${TOTAL}件`, status: '要確認', now: 0, worst: 50,
+      why: `CRITICAL ${CRITICAL}件、HIGH ${HIGH}件。\n確認されれば最優先Aへ上がる` },
   ],
 
-  risks: [
-    'CDN なし',
-    'HSTS 未設定',
-    'DMARC 不備',
-    'DNSSEC なし',
-    'クラウド公開',
-    '旧仕様の WP プラグイン多数',
-  ],
+  risks: ['CDN なし', 'HSTS 未設定', 'DMARC 不備', 'DNSSEC なし', 'クラウド公開', '旧仕様の WP プラグイン多数'],
 
-  // 構成図。col/row は格子の位置。高さは行数に合わせて指定する。
   diagram: {
     boxes: [
       { id: 'user', text: 'エンドユーザ /\nブラウザ', col: 0, row: 0 },
@@ -75,7 +55,7 @@ export const officeNabe: Report = {
   },
 
   signals: [
-    { title: '「古い連携用の入口」', body: '「連帯の閲覧者には不要な、サイト管理と連携する入口へ外部から到達可能」' },
+    { title: '「古い連携用の入口」', body: '「通常の閲覧者には不要な、サイト管理と連携する入口へ外部から到達可能」' },
     { title: '「偽メール対策」', body: '「なりすましメールを受信側で拒否する設定を確認できない状態」' },
     { title: '「最重要区分の候補」', body: `「CRITICAL候補${CRITICAL}件。実際に使われているかは未確定」` },
     { title: '「高い危険区分の候補」', body: `「HIGH候補${HIGH}件。実際に使われているかは未確定」` },

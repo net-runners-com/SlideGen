@@ -3,3 +3,6 @@ dist/
 out/
 *.tsbuildinfo
 .DS_Store
+
+# 実案件のデータは公開しない
+src/reports/*.local.ts

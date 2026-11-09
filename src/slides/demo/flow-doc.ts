@@ -1,5 +1,5 @@
-import { diagram } from '../layout'
-import type { Slide } from '../types'
+import { diagram } from '../../layout'
+import type { Slide } from '../../types'
 
 /** SlideGen 自身の作り方を、SlideGen の構成図テンプレートで描いたもの。
  *  箱と矢印はデータで、配置は格子に任せている。 */
@@ -20,7 +20,7 @@ export const flowDoc: Slide = diagram(
       { id: 'report', text: 'reports/\n案件データ', col: 0, row: 2, h: 90, size: 20 },
       { id: 'layout', text: 'layout.ts\nテンプレート', col: 1.6, row: 2, h: 90, size: 20 },
       { id: 'slides', text: 'slides/\n1ページ=1ファイル', col: 3.2, row: 2, h: 90, size: 20 },
-      { id: 'out', text: 'render → 画面\nPNG / SVG / PDF', col: 4, row: 1.25, h: 96, size: 20 },
+      { id: 'out', text: 'render → 画面\nPNG / PDF', col: 4, row: 1.25, h: 96, size: 20 },
     ],
     edges: [
       { from: 'gpt', to: 'sheetP' },

@@ -6,7 +6,7 @@ import type { Slide, TextNode } from './types'
 import { findByNodeId, renderSlide, type Tagged } from './render/buildSlide'
 import { loadSlideFonts } from './fonts'
 import { loadParts } from './parts'
-import { buildPDF, downloadPNG, downloadSVG, slideToPNG } from './export'
+import { buildPDF, downloadPNG, slideToPNG } from './export'
 import { useTheme, type FontRoles } from './useTheme'
 import { Inspector } from './components/Inspector'
 import { Toolbar } from './components/Toolbar'
@@ -113,17 +113,6 @@ export default function App() {
     if (canvasRef.current) downloadPNG(canvasRef.current, `${slide.id}.png`)
   }, [slide.id])
 
-  const exportSVG = useCallback(async () => {
-    const c = canvasRef.current
-    if (!c) return
-    setBusy('SVG を書き出し中…')
-    try {
-      await downloadSVG(c, `${slide.id}.svg`)
-    } finally {
-      setBusy(null)
-    }
-  }, [slide.id])
-
   const exportAll = useCallback(async () => {
     const c = canvasRef.current
     if (!c) return
@@ -168,7 +157,6 @@ export default function App() {
           onPicks={setPicks}
           choices={FONT_CHOICES}
           onExportPNG={exportPNG}
-          onExportSVG={exportSVG}
           onExportAll={exportAll}
           busy={busy}
         />
