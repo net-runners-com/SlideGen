@@ -51,15 +51,15 @@ export interface PageMeta {
   extra?: boolean
 }
 
-interface HeadOpts {
+export interface HeadOpts {
   title: string
   sub?: string
   /** 見出しの色。省略時はクリーム */
   fill?: string
 }
 
-/** 見出し帯。どのテンプレートも同じ組みにする。 */
-function head(id: string, o: HeadOpts): Node[] {
+/** 見出し帯。どのテンプレートも同じ組みにする。自作のテンプレートからも呼べる。 */
+export function head(id: string, o: HeadOpts): Node[] {
   const out: Node[] = [
     { kind: 'text', id: `${id}.title`, label: 'タイトル',
       x: GRID.margin, y: 42, w: BODY.w,
@@ -74,14 +74,33 @@ function head(id: string, o: HeadOpts): Node[] {
   return out
 }
 
-function foot(id: string, m: PageMeta): Node[] {
+/** 右下のページ番号。page を省いたページには出ない。 */
+export function foot(id: string, m: PageMeta): Node[] {
   if (!m.page) return []
   return [{ kind: 'pagenum', id: `${id}.page`, text: m.page, total: m.total ?? '', variant: 'plain' }]
 }
 
-const page = (m: PageMeta, nodes: Node[]): Slide => ({
+/** メタ情報とノード列から 1 ページを作る。自作テンプレートの最後はこれで包む。 */
+export const page = (m: PageMeta, nodes: Node[]): Slide => ({
   id: m.id, name: m.name, extra: m.extra, nodes,
 })
+
+/**
+ * 自分で版面を組むときの入れ物。見出し帯とページ番号だけ共通にして、
+ * 中身は呼ぶ側が好きに置く。body は BODY 領域の座標で書く。
+ *
+ *   custom({ id: 'p9', name: '09 独自', page: '09' },
+ *     { title: '見出し' },
+ *     [{ kind: 'text', id: 'p9.a', x: col(0, 6).x, y: band(0, 2).y, … }])
+ */
+export function custom(m: PageMeta, h: HeadOpts | null, body: Node[]): Slide {
+  return page(m, [
+    { kind: 'frame', variant: 'none' },
+    ...(h ? head(m.id, h) : []),
+    ...body,
+    ...foot(m.id, m),
+  ])
+}
 
 /* ── テンプレート ───────────────────────────────────── */
 

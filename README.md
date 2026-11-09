@@ -57,6 +57,19 @@ python3 tools/assets/parts.py out/<画像>.png 4 3 public/parts \
 パーツは**色を引数で差し替えられる**。インクの濃さを不透明度にして色だけ乗せているので、
 `parts.py` の最後の引数を変えれば別配色のセットが作れる。
 
+## 装飾した文字を作る
+
+見出しだけ箔押しや縁取りにしたいときは、**1 字ずつ作らせて版面側で並べる**。
+文章として組ませると字が壊れるが、1 マス 1 文字なら壊れない。
+
+```bash
+node tools/gen/lettering.mjs out/ "未確認" 3 "金の箔押し。縁に細い金の輪郭"
+python3 tools/assets/parts.py out/<画像>.png 3 1 public/parts "g-672A,g-78BA,g-8A8D" keep
+```
+
+`keep` を渡すと元の色をそのまま残す（単色に落とすと箔の階調が消えるため）。
+版面では `image` ノードとして 1 字ずつ置く。
+
 ## 文字の原図を作る
 
 ```bash
@@ -124,7 +137,41 @@ bullets(
 `BODY`（本文領域）。`col(n, span)` で段の x と幅、`band(i, n)` で縦の帯が出る。
 テンプレートに無い組みは、この 2 つを使って書く。
 
-`src/slides/templates.ts` が 4 種の見本。画面の `#11`〜`#14`。
+`src/slides/templates.ts` が 4 種の見本。生成の流れ自体も構成図テンプレートで描いてある
+（`src/slides/flow-doc.ts`）。
+
+### 自分でテンプレートを書く
+
+用意した 5 種は入り口で、部品は全部出してある。`custom` は見出し帯とページ番号だけ
+共通にして、中身は呼ぶ側が置く。
+
+```ts
+import { BODY, band, col, custom, head, foot, page } from '../layout'
+
+export const myPage = custom(
+  { id: 'p9', name: '09 独自', page: '09', total: '/ 10' },
+  { title: '自分で組んだページ', sub: '中身は好きに置く' },
+  [
+    { kind: 'card', ...col(0, 7), y: band(0, 1).y, h: band(0, 1).h, variant: 'ornate' },
+    { kind: 'text', id: 'p9.a', label: '本文', ...col(8, 4), y: BODY.y,
+      text: '…', font: F.sans, size: 30, fill: C.paperWhite },
+  ],
+)
+```
+
+見出し帯も要らなければ `page(meta, nodes)` で素の 1 枚になる。
+`head` / `foot` を単体で呼んで組み直してもよい。
+
+| 部品 | 中身 |
+|---|---|
+| `GRID` | 余白・段数・段間・見出し帯・下余白 |
+| `BODY` | 本文領域の x / y / w / h |
+| `col(n, span)` | n 段目から span 段ぶんの x と幅 |
+| `band(i, n, gap)` | 本文を n 段に割った i 番目の y と高さ |
+| `head(id, opts)` | 見出し帯（タイトル・サブ・下罫） |
+| `foot(id, meta)` | 右下のページ番号 |
+| `page(meta, nodes)` | メタとノード列から 1 ページ |
+| `custom(meta, head, body)` | 見出し帯だけ共通にした入れ物 |
 
 ## 案件ごとの差し替え
 

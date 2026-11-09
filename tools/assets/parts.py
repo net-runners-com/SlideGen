@@ -4,7 +4,12 @@
 白を透明にし、必要なら単色へ塗り替える。色は版面側で決めたいので、
 インクの濃さをそのまま不透明度にして、色は引数で差し替える。
 
-    python3 tools/parts.py sheet.png 4 3 public/parts "bracket-tl,scale,marker,bars,..." "#C9452F"
+    python3 tools/assets/parts.py sheet.png 4 3 public/parts "bracket-tl,scale,..." "#C9452F"
+
+色に keep を渡すと、元の色をそのまま残す（金の箔や縁取りのような、
+単色に落とせない装飾文字を切り出すとき）。
+
+    python3 tools/assets/parts.py lettering.png 6 2 public/parts "g-672A,g-78BA,…" keep
 """
 from __future__ import annotations
 
@@ -44,7 +49,8 @@ def main(path: str, cols: int, rows: int, out_dir: str,
     ink = img.mean(2) < PAPER
     ys = grid(ink, 0, rows)
     xs = grid(ink, 1, cols)
-    rgb = tuple(int(color.lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
+    keep = color.lower() == 'keep'
+    rgb = (0, 0, 0) if keep else tuple(int(color.lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
     os.makedirs(out_dir, exist_ok=True)
     labels = [s.strip() for s in names.split(',') if s.strip()]
     n = 0
@@ -67,7 +73,12 @@ def main(path: str, cols: int, rows: int, out_dir: str,
         a = alpha[yy.min():yy.max() + 1, xx.min():xx.max() + 1]
         h, w = a.shape
         out = np.zeros((h, w, 4), np.uint8)
-        out[..., 0], out[..., 1], out[..., 2] = rgb
+        if keep:
+            # 元の色を残す。白地だけを抜くので、箔や縁取りの階調が消えない。
+            crop = cell[yy.min():yy.max() + 1, xx.min():xx.max() + 1]
+            out[..., :3] = np.clip(crop, 0, 255).astype(np.uint8)
+        else:
+            out[..., 0], out[..., 1], out[..., 2] = rgb
         out[..., 3] = (a * 255).astype(np.uint8)
         Image.fromarray(out).save(f'{out_dir}/{labels[i]}.png')
         print(f'  {labels[i]}: {w}x{h}px')
